@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link type="text/css" rel="stylesheet" href="style.css"/>
+<link href='http://fonts.googleapis.com/css?family=Cantora+One|Cabin+Condensed|Roboto+Condensed|Sofadi+One|Montserrat' rel='stylesheet' type='text/css'>
+    <title>Location Lookup</title>
+	<link rel="icon" href="favicon2.png" type="image/x-icon" />
+	<link rel="shortcut icon" href="favicon2.png" type="image/x-icon" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+ <script type="text/javascript" src = "script.js" ></script>
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+
+</head>
+
+
+
+<body onload="initialize();doSearch();">
+
+
+<div id="wrapper">
+	<h1>Location Lookup</h1>
+	<h2>Looking for a mall, store, or restaurant? Find the closest one near you.</h2>
+	<div id="main">
+	<div id="left-side">
+	<div id="search-form" class="modal hide fade">
+    <form id="myList">
+     
+        <input id="city" type="text" name="city" placeholder="city, state" value="Alexandria, VA"/>
+		<input id="query" type="text" name="query" placeholder="mall, restaurant..." value="bakery" />
+        <select id="distance">
+		<optgroup label="Distance (miles)">
+		<option value="10" label="10 miles">10 miles</option>
+		<option selected="selected" value="25" label="25 miles">25 miles</option>
+		<option value="50" label="50 miles">50 miles</option>
+		<option value="100" label="100 miles">100 miles</option>
+		</optgroup>
+		</select>
+        
+		
+		
+ 		 
+                
+	    <input type="submit" value="Look Up" />
+        
+    </form>
+	</div>
+	<div id="results"></div>
+	</div><!--close left-side-->
+	
+	<br/>
+	
+	<div id="right-side">
+	<div id="gmap_canvas"></div>
+	</div><!--close right-side-->
+</div>
+	
+	
+	</div><!--close wrapper-->
+</body>
+</html>

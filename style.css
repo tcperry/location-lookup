@@ -1,0 +1,61 @@
+h1,h2 {text-align:center;}
+h1, h2, h3, h4 {color:#228b22;}
+
+body{
+font-family: 'Cabin Condensed', Arial, sans-serif;
+
+background: #e8f3e8;
+
+}
+
+#left-side, #right-side {float:left;width:520px;}
+
+#search-form {margin-bottom:10px;}
+#right-side {
+margin-top:10px;
+
+}
+
+input[type=submit]{color:#fff;background:#228b22;}
+
+#main {
+width:1200px;
+margin-right:auto;
+margin-left:auto;
+
+}
+
+
+#gmap_canvas {
+    
+	height: 456px;
+    width: 640px;
+    margin-left: 20px;
+    margin-top: 4px;
+	display: inline;
+    float: left;
+	padding: 10px 0 10px 10px;
+	margin-bottom:20px;
+}
+
+#results{
+	display: inline;
+	float: left;
+	height:456px;
+	margin-left: 0px;
+    overflow:auto;
+	border: 1px solid #808080;
+	padding: 10px 0 10px 10px;
+	width:100%;
+	line-height:7px;
+	margin-bottom:20px;
+	background:#fff;
+	background-image: url(fs-logo.png);
+	background-position: 95% top;
+	background-repeat: no-repeat;
+}
+
+
+
+
+
