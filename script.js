@@ -69,11 +69,12 @@ function doSearch() {
 	 input1 = document.getElementById("city").value;//input from city text box
 	var input3 = document.getElementById("query").value; //input from query text box
 	var input2 = document.getElementById("distance").value*1609; //input from distance menu
+	var input4 = document.getElementById("places").value; //input from number of results text box
 	
 	  		
 	$.ajax({
            
-			url: "https://api.foursquare.com/v2/venues/explore?near="+input1+"&radius="+input2+"&query="+input3+"&limit=15&client_id=HK254KTU3LYHC5EOHADRHILDZZTBEJEUBQDD5SI4DB3BCAP3&client_secret=FZM1JVCIAXTMLGID4KSKEEFADKD2IRF2LPEDJJML3ITLLHLE&v=20131016",
+			url: "https://api.foursquare.com/v2/venues/explore?near="+input1+"&radius="+input2+"&query="+input3+"&limit="+input4+ "&client_id=HK254KTU3LYHC5EOHADRHILDZZTBEJEUBQDD5SI4DB3BCAP3&client_secret=FZM1JVCIAXTMLGID4KSKEEFADKD2IRF2LPEDJJML3ITLLHLE&v=20131016",
             
 			    success: function(data){
                 
@@ -84,7 +85,14 @@ function doSearch() {
                 var data_group = data.response.groups[0];
 				for (j=0; j < data_group.items.length; j++){
 			       console.log(j,data_group.items.length,data_group.items[j].venue.name);
-			        $('#results').append('<p><h3>' + data_group.items[j].venue.name + '</h3></p>');
+				   
+				   vname = data_group.items[j].venue.name;
+				   venueNameNS = vname.replace(/[^a-zA-Z0-9-]/g, '');
+				   
+			        $('#results').append('<p '+'id="'+venueNameNS+'"><h3>' + data_group.items[j].venue.name + '</h3></p>');
+					
+					/*$('#results').append('<p><h3>' + data_group.items[j].venue.name + '</h3></p>');*/
+					
 					$('#results').append('<p>' + data_group.items[j].venue.location.address + '</p>');
 					$('#results').append('<p>' + data_group.items[j].venue.location.city + ', ' + data_group.items[j].venue.location.state + ' ' +data_group.items[j].venue.location.postalCode + '</p>');
 					
@@ -92,14 +100,14 @@ function doSearch() {
 				   
 				   					
 			
-			        vname = data_group.items[j].venue.name;
+			        
 				    latitude = data_group.items[j].venue.location.lat;
 				    longitude = data_group.items[j].venue.location.lng;
 					address = data_group.items[j].venue.location.address;
 					city = data_group.items[j].venue.location.city;
 					state = data_group.items[j].venue.location.state;
 					postal = data_group.items[j].venue.location.postalCode;
-					venueNameNS = vname.replace(/[^a-zA-Z0-9-]/g, '');
+					
 				
 				
 				
@@ -138,18 +146,28 @@ function drawMarkers(lat, lng, venueName, address, venueNameNS){
         var marker = new google.maps.Marker(markerOptions);
 		
 		markers.push(marker);
+		
+		/*$('"#'+vname+'"').click(function() {
+      
+            infowindow.open(map,marker);
+       	
+	    });*/
 
         google.maps.event.addListener(marker, 'click', function() {
             infowindow.open(map,marker);
         });
 		
+		google.maps.event.addListener(marker, 'mouseout', function() {
+            infowindow.close(map,marker);
+        });
+		
 		infos.push(infowindow);
         
 
-        $("." + venueNameNS).mouseenter(function(){
+        $("#" + venueNameNS).mouseenter(function(){
             infowindow.open(map,marker);
         });
-        $("." + venueNameNS).mouseleave(function(){
+        $("#" + venueNameNS).mouseleave(function(){
             infowindow.close(map,marker);
         }); 
 

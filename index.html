@@ -22,7 +22,6 @@
 	<h1>Location Lookup</h1>
 	<h2>Looking for a mall, store, or restaurant? Find the closest one near you.</h2>
 	<div id="main">
-	<div id="left-side">
 	<div id="search-form" class="modal hide fade">
     <form id="myList">
      
@@ -31,20 +30,27 @@
         <select id="distance">
 		<optgroup label="Distance (miles)">
 		<option value="10" label="10 miles">10 miles</option>
-		<option selected="selected" value="25" label="25 miles">25 miles</option>
+		<option selected="selected" value="25">25 miles</option>
 		<option value="50" label="50 miles">50 miles</option>
 		<option value="100" label="100 miles">100 miles</option>
 		</optgroup>
 		</select>
         
-		
-		
- 		 
-                
+		<select id="places">
+		<optgroup label="Maximum Number of Results">
+		<option selected="selected" value="5" label="5 places">5</option>
+		<option value="10" label="10 places">10</option>
+		<option value="15" label="15 places">15</option>
+		<option value="20" label="20 places">20</option>
+		</optgroup>
+		</select>
+		 		                
 	    <input type="submit" value="Look Up" />
         
     </form>
 	</div>
+	<div id="left-side">
+	
 	<div id="results"></div>
 	</div><!--close left-side-->
 	
