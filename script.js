@@ -15,11 +15,14 @@ $('input').keypress(function(e){
 });//end document ready
 
 var geocoder;
+var geocoder2;
 var map;
 var markers = Array();
-
+var input1;
 var infos = Array();
-
+var city; //do I need this? 
+var citylat;
+var citylong;
 var latitude;
 var longitude;
 
@@ -60,6 +63,34 @@ function clearInfos() {
     }
 }
 
+function cityCoord() {
+  geocoder2 = new google.maps.Geocoder();
+  //var address = document.getElementById("address").value;
+  geocoder2.geocode( { 'address': input1}, function(results, status) {
+  if (status == google.maps.GeocoderStatus.OK)
+  {
+      
+      citylat = results[0].geometry.location.lat();
+      citylong = results[0].geometry.location.lng();
+	  console.log(citylat);
+	  console.log(citylong);
+	  
+	 /*  var myLatlng2 = new google.maps.LatLng(citylat,citylong);
+
+    var myOptions = { // default map options
+        zoom: 10,
+        center: myLatlng2,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);*/
+  }
+  else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+});
+
+}
+
 
 
 
@@ -82,51 +113,104 @@ function doSearch() {
 				clearOverlays();
 				clearInfos();
 				$('#results').empty();
-                var data_group = data.response.groups[0];
+				//cityCoord();
+				//map.setCenter(new google.maps.LatLng(citylat, citylong));
+				
+				//GET LAT AND LNG OF INPUT1
+
+          /*geocoder2 = new google.maps.Geocoder();
+  
+		geocoder2.geocode( { 'address': input1}, function(results, status) {
+  if (status == google.maps.GeocoderStatus.OK)
+  {
+      
+      citylat = results[0].geometry.location.lat();
+      citylong = results[0].geometry.location.lng();
+	  console.log(citylat);
+	  console.log(citylong);			
+			
+				
+            }//END OF GETTING LAT AND LNG OF INPUT1
+         map.setCenter(new google.maps.LatLng(citylat, citylong));
+		console.log(citylat, citylong);   			
+					
+        });*///end of geocoder2
+				citygeo = data.response.geocode.center;
+				citylat = citygeo.lat;
+				citylong = citygeo.lng;
+				console.log(citylat, citylong);
+                 data_group = data.response.groups[0];
 				for (j=0; j < data_group.items.length; j++){
 			       console.log(j,data_group.items.length,data_group.items[j].venue.name);
 				   
 				   vname = data_group.items[j].venue.name;
 				   venueNameNS = vname.replace(/[^a-zA-Z0-9-]/g, '');
 				   
-			        $('#results').append('<p '+'id="'+venueNameNS+'"><h3>' + data_group.items[j].venue.name + '</h3></p>');
-					
-					/*$('#results').append('<p><h3>' + data_group.items[j].venue.name + '</h3></p>');*/
-					
-					$('#results').append('<p>' + data_group.items[j].venue.location.address + '</p>');
-					$('#results').append('<p>' + data_group.items[j].venue.location.city + ', ' + data_group.items[j].venue.location.state + ' ' +data_group.items[j].venue.location.postalCode + '</p>');
-					
-				    $('#results').append('<p>' + data_group.items[j].venue.contact.formattedPhone + '</p><br/>');
-				   
-				   					
-			
-			        
-				    latitude = data_group.items[j].venue.location.lat;
+				   latitude = data_group.items[j].venue.location.lat;
 				    longitude = data_group.items[j].venue.location.lng;
 					address = data_group.items[j].venue.location.address;
 					city = data_group.items[j].venue.location.city;
 					state = data_group.items[j].venue.location.state;
 					postal = data_group.items[j].venue.location.postalCode;
+					phone = data_group.items[j].venue.contact.formattedPhone;
+				   
+			        $('#results').append('<h3 '+'id="'+venueNameNS+'">' + vname + '</h3>');
 					
-				
-				
-				
+										
+					/*$('#results').append('<p><h3>' + data_group.items[j].venue.name + '</h3></p>');*/
+					
+					if (address === "undefined")
+					  { address = "Street address not specified";
+					  console.log(address);
+					  }
+					
+					$('#results').append('<p>' + address + '</p>');
+					
+					
+					if (postal=="undefined")
+					   $('#results').append('<p>' + city + ', ' + state + '</p>');
+					else
+					$('#results').append('<p>' + city + ', ' + state + ' ' +postal + '</p>');
+					
+					if (phone=="undefined")
+					   $('#results').append('<p>Phone number not specified</p>');
+					 else
+				    $('#results').append('<p>' + phone + '</p><br/>');
+				   
+			  		
+						        
+				    /*latitude = data_group.items[j].venue.location.lat;
+				    longitude = data_group.items[j].venue.location.lng;
+					address = data_group.items[j].venue.location.address;
+					city = data_group.items[j].venue.location.city;
+					state = data_group.items[j].venue.location.state;
+					postal = data_group.items[j].venue.location.postalCode;*/
+					
+						
+								
 				drawMarkers(latitude, longitude,vname,address, venueNameNS);
-				map.setCenter(new google.maps.LatLng(latitude, longitude));
+				//map.setCenter(new google.maps.LatLng(latitude, longitude));
+				//console.log(latitude, longitude);
+				//map.setCenter(new google.maps.LatLng(citylat, citylong));
+				//console.log(citylat, citylong);			
 			
 			
+			}//end of for loop
 			
+			//map.setCenter(new google.maps.LatLng(latitude, longitude));
+			//console.log(latitude, longitude);
 			
-			}
-			
-												
-			
-				
-            },
-            error: function(data){
+			map.setCenter(new google.maps.LatLng(citylat, citylong));
+				console.log(citylat, citylong);	
+		
+		
+		
+		},//end success
+		
+		error: function(data){
                 console.log('ajax error',data)
             }
-        });
+		});//end ajax
 	
 }//end doSearch function
 
@@ -157,9 +241,9 @@ function drawMarkers(lat, lng, venueName, address, venueNameNS){
             infowindow.open(map,marker);
         });
 		
-		google.maps.event.addListener(marker, 'mouseout', function() {
+		/*google.maps.event.addListener(marker, 'mouseout', function() {
             infowindow.close(map,marker);
-        });
+        });*/
 		
 		infos.push(infowindow);
         
