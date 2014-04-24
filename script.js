@@ -34,7 +34,7 @@ function initialize() {
     var myLatlng = new google.maps.LatLng(38.8047,-77.0472);
 
     var myOptions = { // default map options
-        zoom: 10,
+        zoom: 13,
         center: myLatlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -159,7 +159,7 @@ function doSearch() {
 										
 					/*$('#results').append('<p><h3>' + data_group.items[j].venue.name + '</h3></p>');*/
 					
-					if (address === "undefined")
+					if (!address)
 					  { address = "Street address not specified";
 					  console.log(address);
 					  }
@@ -167,14 +167,14 @@ function doSearch() {
 					$('#results').append('<p>' + address + '</p>');
 					
 					
-					if (postal=="undefined")
+					if (!postal)
 					   $('#results').append('<p>' + city + ', ' + state + '</p>');
 					else
 					$('#results').append('<p>' + city + ', ' + state + ' ' +postal + '</p>');
 					
-					if (phone=="undefined")
-					   $('#results').append('<p>Phone number not specified</p>');
-					 else
+					if (!phone)
+					   { phone = "Phone number not specified";
+					   }
 				    $('#results').append('<p>' + phone + '</p><br/>');
 				   
 			  		
@@ -216,8 +216,12 @@ function doSearch() {
 
 
 function drawMarkers(lat, lng, venueName, address, venueNameNS){
-
-        var contentString = '<div style= "overflow: auto; white-space: nowrap; height: 50px;">' + venueName + '<br/>' + '<a href="http://maps.google.com/maps?daddr={' + address + ' ' + city + ', ' + state + ' ' + postal + '}" target="_blank">Get Directions</a></div>';
+        if (address == "Street address not specified")
+		{ contentString = '<div style= "overflow: auto; white-space: nowrap; height: 30px;">' + venueName + '<br/></div>';
+		}
+        else {
+        contentString = '<div style= "overflow: auto; white-space: nowrap; height: 50px;">' + venueName + '<br/>' + '<a href="http://maps.google.com/maps?daddr={' + address + ' ' + city + ', ' + state + ' ' + postal + '}" target="_blank">Get Directions</a></div>';
+		}
 
         var infowindow = new google.maps.InfoWindow({
             content: contentString
