@@ -20,7 +20,7 @@ var map;
 var markers = Array();
 var input1;
 var infos = Array();
-var city; //do I need this? 
+var city; 
 var citylat;
 var citylong;
 var latitude;
@@ -63,33 +63,7 @@ function clearInfos() {
     }
 }
 
-function cityCoord() {
-  geocoder2 = new google.maps.Geocoder();
-  //var address = document.getElementById("address").value;
-  geocoder2.geocode( { 'address': input1}, function(results, status) {
-  if (status == google.maps.GeocoderStatus.OK)
-  {
-      
-      citylat = results[0].geometry.location.lat();
-      citylong = results[0].geometry.location.lng();
-	  console.log(citylat);
-	  console.log(citylong);
-	  
-	 /*  var myLatlng2 = new google.maps.LatLng(citylat,citylong);
 
-    var myOptions = { // default map options
-        zoom: 10,
-        center: myLatlng2,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);*/
-  }
-  else {
-        alert("Geocode was not successful for the following reason: " + status);
-      }
-});
-
-}
 
 
 
@@ -97,7 +71,7 @@ function cityCoord() {
 
 function doSearch() {
 	
-	 input1 = document.getElementById("city").value;//input from city text box
+	input1 = document.getElementById("city").value;//input from city text box
 	var input3 = document.getElementById("query").value; //input from query text box
 	var input2 = document.getElementById("distance").value*1609; //input from distance menu
 	var input4 = document.getElementById("places").value; //input from number of results text box
@@ -113,28 +87,7 @@ function doSearch() {
 				clearOverlays();
 				clearInfos();
 				$('#results').empty();
-				//cityCoord();
-				//map.setCenter(new google.maps.LatLng(citylat, citylong));
 				
-				//GET LAT AND LNG OF INPUT1
-
-          /*geocoder2 = new google.maps.Geocoder();
-  
-		geocoder2.geocode( { 'address': input1}, function(results, status) {
-  if (status == google.maps.GeocoderStatus.OK)
-  {
-      
-      citylat = results[0].geometry.location.lat();
-      citylong = results[0].geometry.location.lng();
-	  console.log(citylat);
-	  console.log(citylong);			
-			
-				
-            }//END OF GETTING LAT AND LNG OF INPUT1
-         map.setCenter(new google.maps.LatLng(citylat, citylong));
-		console.log(citylat, citylong);   			
-					
-        });*///end of geocoder2
 				citygeo = data.response.geocode.center;
 				citylat = citygeo.lat;
 				citylong = citygeo.lng;
@@ -144,7 +97,7 @@ function doSearch() {
 			       console.log(j,data_group.items.length,data_group.items[j].venue.name);
 				   
 				   vname = data_group.items[j].venue.name;
-				   venueNameNS = vname.replace(/[^a-zA-Z0-9-]/g, '');
+				   venueNameSt = vname.replace(/[^a-zA-Z0-9-]/g, '');
 				   
 				   latitude = data_group.items[j].venue.location.lat;
 				    longitude = data_group.items[j].venue.location.lng;
@@ -154,11 +107,10 @@ function doSearch() {
 					postal = data_group.items[j].venue.location.postalCode;
 					phone = data_group.items[j].venue.contact.formattedPhone;
 				   
-			        $('#results').append('<h3 '+'id="'+venueNameNS+'">' + vname + '</h3>');
+			        $('#results').append('<h3 '+'id="'+venueNameSt+'">' + vname + '</h3>');
 					
 										
-					/*$('#results').append('<p><h3>' + data_group.items[j].venue.name + '</h3></p>');*/
-					
+										
 					if (!address)
 					  { address = "Street address not specified";
 					  console.log(address);
@@ -179,26 +131,17 @@ function doSearch() {
 				   
 			  		
 						        
-				    /*latitude = data_group.items[j].venue.location.lat;
-				    longitude = data_group.items[j].venue.location.lng;
-					address = data_group.items[j].venue.location.address;
-					city = data_group.items[j].venue.location.city;
-					state = data_group.items[j].venue.location.state;
-					postal = data_group.items[j].venue.location.postalCode;*/
+				
 					
 						
 								
-				drawMarkers(latitude, longitude,vname,address, venueNameNS);
-				//map.setCenter(new google.maps.LatLng(latitude, longitude));
-				//console.log(latitude, longitude);
-				//map.setCenter(new google.maps.LatLng(citylat, citylong));
-				//console.log(citylat, citylong);			
+				drawMarkers(latitude, longitude,vname,address, venueNameSt);
+						
 			
 			
 			}//end of for loop
 			
-			//map.setCenter(new google.maps.LatLng(latitude, longitude));
-			//console.log(latitude, longitude);
+			
 			
 			map.setCenter(new google.maps.LatLng(citylat, citylong));
 				console.log(citylat, citylong);	
@@ -215,7 +158,7 @@ function doSearch() {
 }//end doSearch function
 
 
-function drawMarkers(lat, lng, venueName, address, venueNameNS){
+function drawMarkers(lat, lng, venueName, address, venueNameSt){
         if (address == "Street address not specified")
 		{ contentString = '<div style= "overflow: auto; white-space: nowrap; height: 30px;">' + venueName + '<br/></div>';
 		}
@@ -235,31 +178,25 @@ function drawMarkers(lat, lng, venueName, address, venueNameNS){
 		
 		markers.push(marker);
 		
-		/*$('"#'+vname+'"').click(function() {
-      
-            infowindow.open(map,marker);
-       	
-	    });*/
+	
 
         google.maps.event.addListener(marker, 'click', function() {
             infowindow.open(map,marker);
         });
 		
-		/*google.maps.event.addListener(marker, 'mouseout', function() {
-            infowindow.close(map,marker);
-        });*/
+		
 		
 		infos.push(infowindow);
         
 
-        $("#" + venueNameNS).mouseenter(function(){
+        $("#" + venueNameSt).mouseenter(function(){
             infowindow.open(map,marker);
         });
-        $("#" + venueNameNS).mouseleave(function(){
+        $("#" + venueNameSt).mouseleave(function(){
             infowindow.close(map,marker);
         }); 
 
-    }
+    } //end drawMarkers function
 
 
 

@@ -16,7 +16,16 @@ margin-top:-24px;
 
 }
 
-input[type=submit]{color:#fff;background:#228b22;}
+input[type=submit]{color:#fff;background:#228b22;font-family: 'Cabin Condensed', Arial, sans-serif;font-size:15px;}
+#city {width:300px; font-family: 'Cabin Condensed', Arial, sans-serif;font-size:15px;}
+#query {width:200px; font-family: 'Cabin Condensed', Arial, sans-serif;font-size:15px;}
+
+select {width:100px;font-family: 'Cabin Condensed', Arial, sans-serif !important;font-size:15px;}
+
+optgroup,option {
+font-family: 'Cabin Condensed', Arial, sans-serif !important;
+font-size:15px;
+}
 
 #main {
 width:1200px;
